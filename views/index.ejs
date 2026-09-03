@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Perkembangan Santri - Rumah Belajar & Mengaji As-Sa'adah</title>
+    
+    <!-- FAVICON SVG -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+    <link rel="shortcut icon" href="/favicon.svg?v=2">
+    
+    <!-- Tailwind CSS & Google Fonts (Arab & Sans) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-arabic { font-family: 'Amiri', serif; }
+        
+        /* WARNA kustom dari Logo As-Sa'adah */
+        .bg-saadah-green { background-color: #65B32E; }
+        .bg-saadah-teal { background-color: #007A87; }
+        .bg-saadah-orange { background-color: #F39200; }
+        .text-saadah-teal { color: #007A87; }
+        .border-saadah-green { border-color: #65B32E; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- UCAPAN AHLAN WA SAHLAN & SELAMAT DATANG (BAGIAN PALING ATAS) -->
+    <div class="bg-saadah-green py-3.5 px-4 text-center shadow-md">
+        <h2 class="font-arabic text-2xl md:text-3xl font-bold text-white tracking-wide dir-rtl">
+            أَهْلًا وَسَهْلًا وَمَرْحَبًا بِكُمْ
+        </h2>
+        <p class="text-xs md:text-sm text-lime-100 font-bold mt-1 tracking-wide uppercase">
+            Selamat Datang di Portal Rumah Belajar dan Mengaji As-Sa'adah
+        </p>
+    </div>
+
+    <!-- MAIN HERO CONTENT -->
+    <main class="max-w-5xl mx-auto px-4 py-8 md:py-10 flex-grow flex flex-col justify-center items-center text-center">
+        
+        <!-- LOGO PORTAL -->
+        <div class="mb-6 relative">
+            <div class="absolute -inset-2 rounded-full bg-lime-300/50 blur-lg"></div>
+            <img src="/Logo.png" onerror="this.onerror=null; this.src='/favicon.svg';" alt="Logo Rumah Belajar & Mengaji As-Sa'adah" class="relative w-32 h-32 md:w-36 md:h-36 object-contain drop-shadow-md mx-auto">
+        </div>
+
+        <!-- JUDUL UTAMA -->
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight max-w-2xl leading-tight">
+            Portal Evaluasi & Capaian Belajar <span class="text-saadah-teal underline decoration-[#F39200] decoration-wavy decoration-2">Santri</span>
+        </h1>
+        <p class="mt-3 text-sm md:text-base text-slate-600 max-w-xl leading-relaxed">
+            Platform terpadu Rumah Belajar dan Mengaji As-Sa'adah untuk memantau hafalan Al-Qur'an, Aisar, Bahasa Arab, serta rekapitulasi nilai santri secara real-time.
+        </p>
+
+        <!-- PILIHAN PORTAL LOGIN (ROLE SWITCHER CARD) -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5 w-full max-w-3xl">
+            
+            <!-- Login Admin -->
+            <a href="/login/admin" class="group bg-white hover:bg-slate-100 border-2 border-slate-200 hover:border-saadah-green p-6 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+                <div class="w-12 h-12 bg-lime-100 text-[#65B32E] group-hover:bg-saadah-green group-hover:text-white rounded-xl flex items-center justify-center text-2xl mx-auto mb-3 transition-colors">
+                    ⚙️
+                </div>
+                <h3 class="text-base font-bold text-slate-800 group-hover:text-[#65B32E]">Portal Admin</h3>
+                <p class="text-xs text-slate-500 mt-1">Kelola data master ustadz, wali, santri & penugasan.</p>
+            </a>
+
+            <!-- Login Ustadz -->
+            <a href="/login/ustadz" class="group bg-white hover:bg-slate-100 border-2 border-slate-200 hover:border-[#007A87] p-6 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+                <div class="w-12 h-12 bg-teal-50 text-[#007A87] group-hover:bg-[#007A87] group-hover:text-white rounded-xl flex items-center justify-center text-2xl mx-auto mb-3 transition-colors">
+                    📖
+                </div>
+                <h3 class="text-base font-bold text-slate-800 group-hover:text-[#007A87]">Portal Ustadz / Dzah</h3>
+                <p class="text-xs text-slate-500 mt-1">Input nilai evaluasi & catatan perkembangan santri binaan.</p>
+            </a>
+
+            <!-- Login Wali -->
+            <a href="/login/wali" class="group bg-white hover:bg-slate-100 border-2 border-slate-200 hover:border-[#F39200] p-6 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+                <div class="w-12 h-12 bg-amber-50 text-[#F39200] group-hover:bg-[#F39200] group-hover:text-white rounded-xl flex items-center justify-center text-2xl mx-auto mb-3 transition-colors">
+                    👨‍👩‍👧
+                </div>
+                <h3 class="text-base font-bold text-slate-800 group-hover:text-[#F39200]">Portal Wali Santri</h3>
+                <p class="text-xs text-slate-500 mt-1">Pantau nilai anak kandung & unduh rekap (Excel/PDF/JPG).</p>
+            </a>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-4 text-center text-xs text-slate-500 bg-white border-t border-slate-200">
+        Rumah Belajar dan Mengaji As-Sa'adah &copy; 2026
+    </footer>
+
+</body>
+</html>
