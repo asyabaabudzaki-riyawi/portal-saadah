@@ -182,56 +182,85 @@
 
             </div>
 
-            <!-- FORM TAMBAH SANTRI BARU -->
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-                    <span class="p-1.5 bg-emerald-50 text-emerald-700 rounded-lg">👶</span> Registrasi Santri Baru
-                </h3>
-                <form action="/api/add-santri" method="POST" class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
-                    <div class="md:col-span-1">
-                        <label class="block font-semibold text-slate-600 mb-1">Nama Santri</label>
-                        <input type="text" name="nama_santri" required placeholder="Muhammad Ali" class="w-full p-2.5 border rounded-xl bg-slate-50">
-                    </div>
-                    <div class="md:col-span-1">
-                        <label class="block font-semibold text-slate-600 mb-1">Wali Santri</label>
-                        <select name="wali_id" required class="w-full p-2.5 border rounded-xl bg-slate-50">
-                            <% waliList.forEach(w => { %>
-                                <option value="<%= w.id %>"><%= w.name %></option>
-                            <% }); %>
-                        </select>
-                    </div>
-                    <div class="md:col-span-1">
-                        <label class="block font-semibold text-slate-600 mb-1">Ustadz Pembimbing</label>
-                        <select name="ustadz_id" class="w-full p-2.5 border rounded-xl bg-slate-50">
-                            <option value="">-- Pilih Ustadz --</option>
-                            <% ustadzList.forEach(u => { %>
-                                <option value="<%= u.id %>"><%= u.name %></option>
-                            <% }); %>
-                        </select>
-                    </div>
-                    <div class="md:col-span-1">
-                        <label class="block font-semibold text-slate-600 mb-1">Program Utama</label>
-                        <select name="program_utama" id="progUtama" onchange="toggleAisarLevelAdmin()" class="w-full p-2.5 border rounded-xl bg-slate-50">
-                            <option value="alquran">Al-Qur'an / Tahfidz</option>
-                            <option value="aisar">Metode Aisar</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-1">
-                        <label class="block font-semibold text-slate-600 mb-1">Level Aisar (Optional)</label>
-                        <select name="aisar_level" id="aisarLevel" class="w-full p-2.5 border rounded-xl bg-slate-50">
-                            <option value="">- Non-Aisar -</option>
-                            <option value="1">Level 1</option>
-                            <option value="2">Level 2</option>
-                            <option value="3">Level 3</option>
-                            <option value="4">Level 4</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-5 text-right">
-                        <button type="submit" class="bg-saadah-green hover:bg-lime-700 text-white font-bold px-6 py-2.5 rounded-xl transition">Daftarkan Santri</button>
-                    </div>
-                </form>
-            </div>
+<!-- 1. FORM REGISTRASI SANTRI BARU (DENGAN PILIHAN BAHASA ARAB) -->
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+        <span class="p-1.5 bg-emerald-50 text-emerald-700 rounded-lg">👶</span> Registrasi Santri Baru
+    </h3>
+    <form action="/api/add-santri" method="POST" class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+        <div class="md:col-span-1">
+            <label class="block font-semibold text-slate-600 mb-1">Nama Santri</label>
+            <input type="text" name="nama_santri" required placeholder="Muhammad Ali" class="w-full p-2.5 border rounded-xl bg-slate-50">
+        </div>
+        <div class="md:col-span-1">
+            <label class="block font-semibold text-slate-600 mb-1">Wali Santri</label>
+            <select name="wali_id" required class="w-full p-2.5 border rounded-xl bg-slate-50">
+                <% waliList.forEach(w => { %>
+                    <option value="<%= w.id %>"><%= w.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="md:col-span-1">
+            <label class="block font-semibold text-slate-600 mb-1">Ustadz Pembimbing</label>
+            <select name="ustadz_id" class="w-full p-2.5 border rounded-xl bg-slate-50">
+                <option value="">-- Pilih Ustadz --</option>
+                <% ustadzList.forEach(u => { %>
+                    <option value="<%= u.id %>"><%= u.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        
+        <!-- DROPDOWN PROGRAM UTAMA (SUDAH DITAMBAHKAN BAHASA ARAB) -->
+        <div class="md:col-span-1">
+            <label class="block font-semibold text-slate-600 mb-1">Program Utama</label>
+            <select name="program_utama" id="progUtama" onchange="toggleAisarLevelAdmin()" class="w-full p-2.5 border rounded-xl bg-slate-50">
+                <option value="alquran">Al-Qur'an / Tahfidz</option>
+                <option value="aisar">Metode Aisar</option>
+                <option value="bahasa_arab">Bahasa Arab</option>
+            </select>
+        </div>
+        
+        <div class="md:col-span-1">
+            <label class="block font-semibold text-slate-600 mb-1">Level Aisar (Khusus Aisar)</label>
+            <select name="aisar_level" id="aisarLevel" class="w-full p-2.5 border rounded-xl bg-slate-50">
+                <option value="">- Non-Aisar -</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4</option>
+            </select>
+        </div>
+        <div class="md:col-span-5 text-right">
+            <button type="submit" class="bg-saadah-green hover:bg-lime-700 text-white font-bold px-6 py-2.5 rounded-xl transition">Daftarkan Santri</button>
+        </div>
+    </form>
+</div>
 
+<!-- 2. FORM TAMBAH USTADZ (SISTEM USERNAME) -->
+<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+        <span class="p-1.5 bg-teal-50 text-saadah-teal rounded-lg">👨‍🏫</span> Tambah Ustadz / Dzah
+    </h3>
+    <form action="/api/add-ustadz" method="POST" class="space-y-3 text-xs">
+        <div>
+            <label class="block font-semibold text-slate-600 mb-1">Nama Lengkap</label>
+            <input type="text" name="name" required placeholder="Ustadz Abdullah" class="w-full p-2.5 border rounded-xl bg-slate-50">
+        </div>
+        <div>
+            <label class="block font-semibold text-slate-600 mb-1">Username Login</label>
+            <input type="text" name="username" placeholder="ustadz_abdullah" class="w-full p-2.5 border rounded-xl bg-slate-50">
+        </div>
+        <div>
+            <label class="block font-semibold text-slate-600 mb-1">No. WhatsApp</label>
+            <input type="text" name="no_wa" required placeholder="081234567890" class="w-full p-2.5 border rounded-xl bg-slate-50">
+        </div>
+        <div>
+            <label class="block font-semibold text-slate-600 mb-1">Password</label>
+            <input type="password" name="password" required placeholder="******" class="w-full p-2.5 border rounded-xl bg-slate-50">
+        </div>
+        <button type="submit" class="w-full bg-saadah-teal hover:bg-teal-800 text-white font-bold py-2.5 rounded-xl transition">Simpan Ustadz</button>
+    </form>
+</div>
             <!-- TABEL DATA SANTRI MASTER -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-5">
                 <h3 class="text-sm font-bold text-slate-900 mb-4">Daftar Santri Terdaftar</h3>

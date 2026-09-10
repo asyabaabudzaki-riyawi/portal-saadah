@@ -81,22 +81,24 @@ app.get('/login/:role', (req, res) => {
     res.render('login', { role });
 });
 
-// API Process Login
+// API Process Login (Mendukung Username & No. WA)
 app.post('/api/login', async (req, res) => {
-    const { no_wa, password, role } = req.body;
+    const { no_wa, username, password, role } = req.body;
+    const identifier = username || no_wa; // Menggunakan input username atau no_wa
 
     try {
+        // Cari pengguna berdasarkan (no_wa OR username) dan role
         const { data: user, error } = await supabase
             .from('users')
             .select('*')
-            .eq('no_wa', no_wa)
+            .or(`no_wa.eq.${identifier},username.eq.${identifier}`)
             .eq('role', role)
             .single();
 
         if (error || !user) {
             return res.status(400).json({ 
                 success: false, 
-                message: 'Nomor WhatsApp atau Role tidak terdaftar!' 
+                message: 'Username / Nomor WhatsApp atau Role tidak terdaftar!' 
             });
         }
 
@@ -122,6 +124,7 @@ app.post('/api/login', async (req, res) => {
             id: user.id,
             name: user.name,
             no_wa: user.no_wa,
+            username: user.username,
             role: user.role
         };
 
@@ -132,7 +135,7 @@ app.post('/api/login', async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Error Login:", err);
         res.status(500).json({ success: false, message: 'Terjadi kesalahan sistem internal.' });
     }
 });
@@ -332,12 +335,18 @@ app.post('/api/scores', requireAuth('ustadz'), async (req, res) => {
     }
 });
 
-// Tambah Ustadz / Dzah Baru
+// Tambah Ustadz / Dzah Baru (Dengan Username)
 app.post('/api/add-ustadz', requireAuth('admin'), async (req, res) => {
-    const { name, no_wa, password } = req.body;
+    const { name, username, no_wa, password } = req.body;
     try {
         const { error } = await supabase.from('users').insert([
-            { name, no_wa, password, role: 'ustadz' }
+            { 
+                name, 
+                username: username || no_wa, // Jika username kosong, otomatis diisi no_wa
+                no_wa, 
+                password, 
+                role: 'ustadz' 
+            }
         ]);
 
         if (error) throw error;
