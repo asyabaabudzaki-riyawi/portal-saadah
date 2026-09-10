@@ -187,11 +187,14 @@ app.get('/admin/dashboard', requireAuth('admin'), async (req, res) => {
     }
 });
 
-// Dashboard Ustadz
+// ==========================================
+// DASHBOARD USTADZ (FILTER HANYA SANTRI BINAAN)
+// ==========================================
 app.get('/ustadz/dashboard', requireAuth('ustadz'), async (req, res) => {
     try {
         const ustadzId = req.session.user.id;
 
+        // 1. Ambil daftar program yang ditugaskan ke Ustadz ini
         const { data: assignedPrograms } = await supabase
             .from('ustadz_assignments')
             .select('program')
@@ -199,11 +202,13 @@ app.get('/ustadz/dashboard', requireAuth('ustadz'), async (req, res) => {
 
         const myPrograms = assignedPrograms ? assignedPrograms.map(p => p.program) : [];
 
+        // 2. Ambil HANYA santri yang dibina oleh Ustadz ini
         const { data: santriList } = await supabase
             .from('santris')
             .select('*')
             .eq('ustadz_id', ustadzId);
 
+        // 3. Ambil riwayat nilai yang diinput oleh Ustadz ini
         const { data: recentScores } = await supabase
             .from('scores')
             .select('*, santris(nama_santri)')
@@ -217,8 +222,52 @@ app.get('/ustadz/dashboard', requireAuth('ustadz'), async (req, res) => {
             recentScores: recentScores || []
         });
     } catch (err) {
-        console.error(err);
+        console.error("Error Dashboard Ustadz:", err);
         res.status(500).send('Terjadi kesalahan memuat dashboard ustadz');
+    }
+});
+
+// ==========================================
+// API INPUT NILAI (DILENGKAPI VALIDASI KETAT)
+// ==========================================
+app.post('/api/scores', requireAuth('ustadz'), async (req, res) => {
+    const { santri_id, program, sub_modul, nilai, catatan } = req.body;
+    const ustadz_id = req.session.user.id;
+
+    try {
+        // VALIDASI 1: Cek apakah Santri benar-benar dibina oleh Ustadz ini
+        const { data: checkSantri } = await supabase
+            .from('santris')
+            .select('*')
+            .eq('id', santri_id)
+            .eq('ustadz_id', ustadz_id)
+            .single();
+
+        if (!checkSantri) {
+            return res.status(403).send('Akses Ditolak: Santri ini bukan merupakan santri binaan Anda!');
+        }
+
+        // VALIDASI 2: Cek apakah Ustadz memang mengampu program tersebut
+        const { data: checkAssign } = await supabase
+            .from('ustadz_assignments')
+            .select('*')
+            .eq('ustadz_id', ustadz_id)
+            .ilike('program', program) // ilike agar case-insensitive (misal: 'Bahasa Arab')
+            .single();
+
+        if (!checkAssign) {
+            return res.status(403).send('Akses Ditolak: Anda tidak mengampu program ' + program);
+        }
+
+        // Simpan nilai jika seluruh validasi lolos
+        await supabase.from('scores').insert([
+            { santri_id, ustadz_id, program, sub_modul, nilai: parseInt(nilai), catatan }
+        ]);
+
+        res.redirect('/ustadz/dashboard');
+    } catch (err) {
+        console.error("Error Save Score:", err);
+        res.status(500).send('Gagal menyimpan nilai: ' + err.message);
     }
 });
 
